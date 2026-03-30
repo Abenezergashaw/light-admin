@@ -1,5 +1,10 @@
 <!-- pages/withdraws.vue -->
 <script setup>
+definePageMeta({
+  middleware: "role-gate",
+  roles: ["admin", "agent"], // Only users where user.role === 'Admin'
+});
+
 const { call } = useApi();
 
 const orders = ref([]);

@@ -19,12 +19,12 @@ const menus = [
     roles: ["admin", "agent"],
   },
   { name: "Online Users", path: "/online-users", icon: "💰", roles: ["admin"] },
-  {
-    name: "Unsettled bets",
-    path: "/bets/unsettled-bets",
-    icon: "🎟",
-    roles: ["admin"],
-  },
+  // {
+  //   name: "Unsettled bets",
+  //   path: "/bets/unsettled-bets",
+  //   icon: "🎟",
+  //   roles: ["admin"],
+  // },
   { name: "Account", path: "/account", icon: "🎁", roles: ["admin"] },
 ];
 
@@ -58,9 +58,7 @@ onMounted(async () => {
         'md:translate-x-0 md:static',
       ]"
     >
-      <div class="p-4 text-lg font-bold border-b border-purple-700">
-        Zemen Bet
-      </div>
+      <div class="p-3 text-lg font-bold border-b">Light Bet</div>
 
       <nav class="p-2 space-y-1">
         <NuxtLink
@@ -99,7 +97,7 @@ onMounted(async () => {
       >
         <button class="md:hidden text-xl" @click="open = true">☰</button>
 
-        <div class="text-lg font-bold uppercase">Zemen Bet</div>
+        <div class="text-lg font-bold uppercase">Light Bet</div>
 
         <div class="text-sm opacity-80">{{ user?.role }}</div>
       </header>
