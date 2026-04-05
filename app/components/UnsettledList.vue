@@ -5,8 +5,8 @@ const props = defineProps({
 
 const emit = defineEmits(["settle"]);
 
-const action = (id, type) => {
-  emit("settle", { id, action: type });
+const action = (ids, type) => {
+  emit("settle", ids, type);
 };
 </script>
 
@@ -27,20 +27,18 @@ const action = (id, type) => {
 
       <div class="bg-gray-300 px-3 py-2 flex justify-between items-center">
         <p class="text-xs font-semibold text-gray-800">
-          {{ b.ticket_id }}
+          Total: {{ b.total_bets }}
         </p>
 
-        <span class="text-[10px] bg-gray-400 px-2 py-0.5 rounded">
+        <!-- <span class="text-[10px] bg-gray-400 px-2 py-0.5 rounded">
           ID {{ b.id }}
-        </span>
+        </span> -->
       </div>
 
       <!-- match -->
 
       <div class="p-3 space-y-1">
-        <p class="text-sm font-medium text-gray-800">
-          {{ b.event_name }}
-        </p>
+        <p class="text-sm font-medium text-gray-800">{{ b.event_name }}</p>
 
         <p class="text-xs text-gray-600">
           {{ b.competition }}
@@ -66,21 +64,21 @@ const action = (id, type) => {
       <div class="grid grid-cols-3 gap-[1px] bg-gray-300">
         <button
           class="bg-green-200 text-[11px] py-2 hover:bg-green-300"
-          @click="action(b.id, 'won')"
+          @click="action(b.ids_list, 'won')"
         >
           Win
         </button>
 
         <button
           class="bg-red-200 text-[11px] py-2 hover:bg-red-300"
-          @click="action(b.id, 'lost')"
+          @click="action(b.ids_list, 'lost')"
         >
           Lose
         </button>
 
         <button
           class="bg-gray-100 text-[11px] py-2 hover:bg-gray-200"
-          @click="action(b.id, 'void')"
+          @click="action(b.ids_list, 'void')"
         >
           Void
         </button>

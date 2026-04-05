@@ -14,9 +14,12 @@ const handleCallBets = async () => {
 
 await handleCallBets();
 
-const handleSettle = async ({ id, action }) => {
-  console.log(id, action);
-
+const handleSettle = async (ids, action) => {
+  const idArray =
+    typeof ids === "string"
+      ? ids.split(",").map((id) => Number(id.trim()))
+      : ids;
+  console.log(ids, action, idArray);
   //   let status = 'lost'
   //   if(action ==='win'){}
 
@@ -24,7 +27,7 @@ const handleSettle = async ({ id, action }) => {
     await call({
       url: "/api/settle-manually",
       method: "POST",
-      data: { id, status: action },
+      data: { id: idArray, status: action },
       credentials: true,
     });
     alert("Bet settled");
