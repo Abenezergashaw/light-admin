@@ -4,7 +4,7 @@ const props = defineProps({
   range: String,
 });
 
-const emit = defineEmits(["changeRange"]);
+const emit = defineEmits(["changeRange", "loadCustomRange"]);
 
 const router = useRouter();
 
@@ -15,6 +15,35 @@ const ranges = [
   { label: "2 Weeks", value: "2week" },
   { label: "Month", value: "month" },
 ];
+
+const getTodayString = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const fromDate = ref(getTodayString());
+const toDate = ref(getTodayString());
+
+const handleLoadCustom = () => {
+  if (!fromDate.value || !toDate.value) {
+    alert("Please select both 'From' and 'To' dates.");
+    return;
+  }
+
+  // Validation: To must be greater than From
+  if (new Date(toDate.value) < new Date(fromDate.value)) {
+    alert("Invalid Range: The 'To' date must be after the 'From' date.");
+    return;
+  }
+
+  emit("loadCustomRange", {
+    from: fromDate.value,
+    to: toDate.value,
+  });
+};
 
 const handleUserClick = (user) => {
   // Check the role before taking action
@@ -35,18 +64,53 @@ const changeRange = (e) => {
   <div class="space-y-4">
     <!-- range select -->
 
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center gap-3">
       <h2 class="text-lg font-semibold text-gray-700">Financial Report</h2>
 
-      <select
-        class="border rounded px-3 py-1 text-sm bg-gray-100"
-        :value="range"
-        @change="changeRange"
-      >
-        <option v-for="r in ranges" :key="r.value" :value="r.value">
-          {{ r.label }}
-        </option>
-      </select>
+      <div class="flex md:flex-row flex-col gap-2">
+        <div
+          class="flex items-end gap-2 bg-gray-800/30 p-2 rounded-lg border border-white/10"
+        >
+          <div class="flex flex-col">
+            <label
+              class="text-[9px] text-white/60 ml-1 uppercase font-bold mb-1"
+              >From</label
+            >
+            <input
+              v-model="fromDate"
+              type="date"
+              class="text-xs p-1.5 rounded-lg border-none bg-white focus:ring-2 focus:ring-emerald-400 w-[130px]"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label
+              class="text-[9px] text-white/60 ml-1 uppercase font-bold mb-1"
+              >To</label
+            >
+            <input
+              v-model="toDate"
+              type="date"
+              class="text-xs p-1.5 rounded-lg border-none bg-white focus:ring-2 focus:ring-emerald-400 w-[130px]"
+            />
+          </div>
+          <button
+            @click="handleLoadCustom"
+            class="bg-gray-200 hover:bg-gray-300 active:scale-95 text-black text-[11px] font-black px-4 py-2 rounded-lg shadow-lg transition-all"
+          >
+            LOAD
+          </button>
+        </div>
+
+        <select
+          class="border rounded px-3 py-1 text-sm bg-gray-100"
+          :value="range"
+          @change="changeRange"
+        >
+          <option v-for="r in ranges" :key="r.value" :value="r.value">
+            {{ r.label }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <!-- user summary -->

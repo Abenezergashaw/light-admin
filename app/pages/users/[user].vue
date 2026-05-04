@@ -9,13 +9,15 @@ const route = useRoute();
 const user = route.params.user;
 console.log(user);
 
-const fetchReport = async () => {
+const fetchReport = async (from = null, to = null) => {
   const res = await call({
     url: "/api/financial-report",
     method: "POST",
     data: {
       userId: user,
       range: range.value,
+      from,
+      to,
     },
     credentials: true,
   });
@@ -23,6 +25,11 @@ const fetchReport = async () => {
   if (!res.error) {
     report.value = res.report;
   }
+};
+
+const handleLoadCustomRange = async ({ from, to }) => {
+  console.log("Loading custom range:", from, to);
+  await fetchReport(from, to);
 };
 
 await fetchReport();
@@ -40,6 +47,7 @@ const handleRange = async (r) => {
       :report="report"
       :range="range"
       @changeRange="handleRange"
+      @loadCustomRange="handleLoadCustomRange"
     />
   </div>
 </template>
